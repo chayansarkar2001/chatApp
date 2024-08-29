@@ -9,7 +9,7 @@ function People({ val }) {
     const handlePeopleSelect = (e) => {
         e.preventDefault()
         const uid = e.currentTarget.id
-        if (uid == -1) return
+        if (uid == currId || uid == -1) return
         if (!(uid in CHATS)) {
             console.log("user selected from People:", { "contact": userDetails.contact, "chatWith": uid, CHATS })
             setShowModal({ show: true, info: "fetching your old messages" })
@@ -19,6 +19,7 @@ function People({ val }) {
         if (window.innerWidth < 650) {
             ptcRef.current.style.display = "none"
         }
+        window.history.pushState({ page: uid }, null, `${uid}`)
     }
 
 

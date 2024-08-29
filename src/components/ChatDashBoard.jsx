@@ -22,6 +22,10 @@ const ChatDashBoard = () => {
         msg = { "sender": userDetails.contact, "reciver": currId, "contend": msg }
         console.log("send:", { "sendTo": currId, "msg": msg, "contact": userDetails.contact })
         socket.emit("msg:sendTo", { "sendTo": currId, "msg": msg, "contact": userDetails.contact })
+        msgInputRef.current.value = ""
+        msgInputRef.current.dispatchEvent(new Event('change'))
+        if (currId == userDetails.contact) return
+
         setCHATS((CHATS) => {
             const newCHATS = { ...CHATS }
             if (!(currId in newCHATS)) { newCHATS[currId] = [] }
@@ -30,12 +34,9 @@ const ChatDashBoard = () => {
             console.log("after send, newCHATS:", newCHATS)
             return newCHATS
         })
-        msgInputRef.current.value = ""
-        msgInputRef.current.dispatchEvent(new Event('input'))
     }
-    const handleBackBtn = () => {
-        setCurrId(null)
-        ptcRef.current.style.display = "flex"
+    const handleBackBtn = (e) => {
+        window.history.back()
     }
 
     const handleTextAreaChange = (e) => {
@@ -43,6 +44,26 @@ const ChatDashBoard = () => {
         e.target.style.height = `${Math.min(e.target.scrollHeight, 150)}px`
     }
 
+    useEffect(() => {
+        window.history.replaceState({ page: "chatapp" }, "chatapp", "/chatapp")
+        window.history.pushState({ page: "exit" }, "exit", "/exit")
+        window.history.pushState({ page: "peoples" }, "peoples", "/peoples")
+        window.addEventListener("popstate", (e) => {
+            e.preventDefault()
+            if (e.state.page == "exit") {
+                const res = confirm("Are you want to exit?")
+                if (res) {
+                    window.history.back()
+                    window.history.back()
+                } else {
+                    window.history.forward()
+                }
+            }
+            setCurrId(null)
+            ptcRef.current.style.display = "flex"
+        })
+        return () => { window.removeEventListener("popstate", handleBackBtn) }
+    }, [])
     return (
         <div className='outer'>
             <div className='dashboard'>
@@ -71,7 +92,7 @@ const ChatDashBoard = () => {
                         <form className="msgInputContainer">
                             <textarea onChange={handleTextAreaChange} ref={msgInputRef} rows={1}
                                 type="text" className='msgInput customScrollBar'
-                                placeholder='  Type a message'></textarea>
+                                placeholder=' Type a message'></textarea>
                             <div className="sendBtn" onClick={handleSend}><img alt=">" src={sendIcon} /></div>
                         </form>
                     </div> : <div className="titleMsg">Chat with your friends</div>
