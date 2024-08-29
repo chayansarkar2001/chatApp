@@ -23,7 +23,7 @@ const ChatDashBoard = () => {
         console.log("send:", { "sendTo": currId, "msg": msg, "contact": userDetails.contact })
         socket.emit("msg:sendTo", { "sendTo": currId, "msg": msg, "contact": userDetails.contact })
         msgInputRef.current.value = ""
-        msgInputRef.current.dispatchEvent(new Event('change'))
+        // msgInputRef.current.dispatchEvent(new Event('change'))
         if (currId == userDetails.contact) return
 
         setCHATS((CHATS) => {

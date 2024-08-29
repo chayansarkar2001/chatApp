@@ -1,4 +1,5 @@
 :root {
+    --vh: 1vh;
     --hover: #202C33;
     --select: #2A3942;
     --mainwindow: #0C1317;
@@ -25,10 +26,10 @@ body {
 }
 
 .outer {
-    height: 100vh;
+    height: calc(var(--vh, 1vh)*100);
     width: 100vw;
-    height: 100dvh;
-    width: 100dvw;
+    /* height: 100dvh;
+    width: 100dvw; */
     padding: 18px;
     padding-bottom: 20px;
     background-color: var(--mainwindow);
