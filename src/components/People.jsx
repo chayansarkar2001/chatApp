@@ -11,7 +11,6 @@ function People({ val }) {
         const uid = e.currentTarget.id
         if (uid == currId || uid == -1) return
         if (!(uid in CHATS)) {
-            console.log("user selected from People:", { "contact": userDetails.contact, "chatWith": uid, CHATS })
             setShowModal({ show: true, info: "fetching your old messages" })
             socket.emit("msg:request", { "contact": userDetails.contact, "chatWith": uid })
         }

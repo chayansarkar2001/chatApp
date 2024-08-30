@@ -1,12 +1,12 @@
 import { io } from "socket.io-client"
 
-// const socket = io("http://localhost:3000", {
-//     autoConnect: false
-// })
-
-const socket = io("https://chatappserver-dhqc.onrender.com/", {
+const socket = io("http://192.168.0.206:3000", {
     autoConnect: false
 })
+
+// const socket = io("https://chatappserver-dhqc.onrender.com/", {
+//     autoConnect: false
+// })
 
 export default socket
 

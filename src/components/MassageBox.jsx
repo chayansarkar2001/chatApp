@@ -1,8 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import useGlobalContext from '../context.js/GlobalContextProvider'
-import Modal from './Modal'
 
-const MassageBox = ({ props }) => {
+const MassageBox = () => {
     const { currId, CHATS } = useGlobalContext()
     const msgBoxRef = useRef(null)
 

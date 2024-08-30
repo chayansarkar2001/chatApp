@@ -8,9 +8,7 @@ import backIcon from "../assets/backbutton.svg"
 import Modal from './Modal'
 
 const ChatDashBoard = () => {
-    const { currId, setCurrId, CHATS, setCHATS, userList, userDetails, ptcRef } = useGlobalContext()
-
-    // console.log("props:", { currId, setCurrId, messages, setMessages, userList })
+    const { currId, setCurrId, sound, setCHATS, userList, userDetails, ptcRef } = useGlobalContext()
 
     const msgInputRef = useRef(null)
 
@@ -20,18 +18,16 @@ const ChatDashBoard = () => {
         let msg = msgInputRef.current.value;
         if (msg == "") return
         msg = { "sender": userDetails.contact, "reciver": currId, "contend": msg }
-        console.log("send:", { "sendTo": currId, "msg": msg, "contact": userDetails.contact })
+        sound.currentTime = 0
+        sound.play()
         socket.emit("msg:sendTo", { "sendTo": currId, "msg": msg, "contact": userDetails.contact })
         msgInputRef.current.value = ""
-        // msgInputRef.current.dispatchEvent(new Event('change'))
         if (currId == userDetails.contact) return
 
         setCHATS((CHATS) => {
             const newCHATS = { ...CHATS }
             if (!(currId in newCHATS)) { newCHATS[currId] = [] }
-            console.log("newCHATS:", newCHATS)
             newCHATS[currId].push(msg)
-            console.log("after send, newCHATS:", newCHATS)
             return newCHATS
         })
     }

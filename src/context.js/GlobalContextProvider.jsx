@@ -1,5 +1,6 @@
 import { useContext, useState, createContext, useEffect, useRef } from 'react';
 import socket from '../socket';
+import beep from '../assets/beep.mp3'
 
 const GlobalContext = createContext();
 
@@ -14,6 +15,7 @@ const GlobalContextProvider = ({ childComponent }) => {
     const [showModal, setShowModal] = useState({ show: false, info: "" })
     const [currId, setCurrId] = useState(null)
     const [CHATS, setCHATS] = useState({})
+    const sound = new Audio(beep)
     // const [CHATS, setCHATS] = useState({
     //     "1": [
     //         { "sender": "1", "reciver": "2", "contend": "new msg" },
@@ -42,7 +44,6 @@ const GlobalContextProvider = ({ childComponent }) => {
 
     useEffect(() => {
         const handleNewUser = ({ newUserList }) => {
-            console.log("Get new userList from backend:", newUserList)
             if (newUserList)
                 setUserList(newUserList) // {"234":{"socketId":socket.id,userName:"chayan"}}
             else
@@ -51,12 +52,12 @@ const GlobalContextProvider = ({ childComponent }) => {
         }
 
         const handleMsgRecive = ({ reciveFrom, msg }) => {
-            console.log("recive msg:", { msg, reciveFrom })
+            sound.currentTime = 0
+            sound.play()
             setCHATS((CHATS) => {
                 const newCHATS = { ...CHATS }
                 if (!(reciveFrom in newCHATS)) { newCHATS[reciveFrom] = [] }
                 newCHATS[reciveFrom].push(msg)
-                console.log("afterrecive, newCHATS:", newCHATS)
                 return newCHATS
             })
         }
@@ -67,7 +68,6 @@ const GlobalContextProvider = ({ childComponent }) => {
                 const newCHATS = { ...CHATS }
                 if (!(chatWith in newCHATS)) { newCHATS[chatWith] = [] }
                 newCHATS[chatWith].push(...chat)
-                console.log("after fetch, newCHATS:", newCHATS)
                 return newCHATS
             })
             setShowModal({ show: false, info: "" })
@@ -98,7 +98,8 @@ const GlobalContextProvider = ({ childComponent }) => {
         currId, setCurrId,
         CHATS, setCHATS,
         showModal, setShowModal,
-        ptcRef
+        ptcRef,
+        sound
     }}>
         {childComponent}
     </GlobalContext.Provider>
