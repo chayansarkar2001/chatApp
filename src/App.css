@@ -133,6 +133,7 @@
     gap: 10px;
     background-image: var(--imgpath);
     background-size: contain;
+    background-repeat: round;
     overflow-y: scroll;
     padding: 6px;
     position: relative;
@@ -148,6 +149,7 @@
     background-color: var(--select);
     word-wrap: break-word;
     word-break: break-all;
+    white-space: round;
 }
 
 .flexEnd {
