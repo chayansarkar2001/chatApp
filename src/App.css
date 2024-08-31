@@ -149,7 +149,7 @@
     background-color: var(--select);
     word-wrap: break-word;
     word-break: break-all;
-    white-space: round;
+    white-space: pre-wrap;
 }
 
 .flexEnd {
